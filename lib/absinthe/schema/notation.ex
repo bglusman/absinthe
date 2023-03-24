@@ -1525,7 +1525,14 @@ defmodule Absinthe.Schema.Notation do
     |> do_import_sdl(sdl, opts)
   end
 
-  defmacro values(values) do
+  defmacro values(values, _opts \\ []) do
+    __CALLER__
+    |> record_values!(values)
+  end
+
+  # or via above opts?
+  defmacro deprecated_values(values) do
+    # TODO: figure out how to deprecate values
     __CALLER__
     |> record_values!(values)
   end

@@ -60,7 +60,15 @@ defmodule Absinthe.Type.EnumTest do
       values color_list()
     end
 
+    enum :dynamic_deprecated_color_list do
+      # TODO, notation one of two ways below?
+      values color_list(), deprecated_values: deprecated_color_list()
+      deprecated_values deprecated_color_list()
+    end
+
     def color_list, do: [:purple, :orange, :yellow]
+
+    def deprecated_color_list, do: [:fusia, :mauve, :magenta]
 
     def color(:red), do: {255, 0, 0}
     def color(:green), do: {0, 255, 0}
@@ -102,6 +110,17 @@ defmodule Absinthe.Type.EnumTest do
       assert %Type.Enum.Value{name: "YELLOW"} = type.values[:yellow]
       assert %Type.Enum.Value{name: "PURPLE"} = type.values[:purple]
       assert %Type.Enum.Value{name: "ORANGE"} = type.values[:orange]
+    end
+
+    test "values can be deprecated dynamically too" do
+      type = TestSchema.__absinthe_type__(:dynamic_deprecated_color_list)
+
+      assert %Type.Enum.Value{name: "YELLOW"} = type.values[:yellow]
+      assert %Type.Enum.Value{name: "PURPLE"} = type.values[:purple]
+      assert %Type.Enum.Value{name: "ORANGE"} = type.values[:orange]
+      assert %Type.Enum.Value{name: "FUSIA", deprecation: true} = type.values[:fusia]
+      assert %Type.Enum.Value{name: "MAUVE", deprecation: true} = type.values[:mauve]
+      assert %Type.Enum.Value{name: "MAGENTA", deprecation: true} = type.values[:magenta]
     end
   end
 

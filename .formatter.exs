@@ -52,7 +52,10 @@ locals_without_parens = [
   union: 3,
   value: 1,
   value: 2,
-  values: 1
+  values: 1,
+  values: 2,
+  # values: 2 above, or deprecated_values: 1 below?
+  deprecated_values: 1
 ]
 
 [
